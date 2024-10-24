@@ -6,6 +6,7 @@ import androidx.activity.compose.setContent
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -14,6 +15,10 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -33,7 +38,7 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-
+                    ArtSpaceApp()
                 }
             }
  }}}
@@ -41,22 +46,45 @@ class MainActivity : ComponentActivity() {
 
 @Composable
 fun ArtSpaceApp() {
+    var currentIndex by remember { mutableStateOf(0) }
+
+    val artworks = listOf(
+        Artwork(R.drawable.artwork1, "Sailing Under the Bridge", "Kat Kuan", 2017),
+        Artwork(R.drawable.artwork2, "Misty Mountains", "John Doe", 2020),
+        Artwork(R.drawable.artwork3, "Golden Sunrise", "Jane Smith", 2019)
+    )
+
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center,
         modifier = Modifier.fillMaxSize().padding(16.dp)
     ) {
 
+        DisplayArtwork(artwork = artworks[currentIndex])
+
+        Spacer(modifier = Modifier.height(16.dp))
+
+
+        Row(
+            horizontalArrangement = Arrangement.SpaceEvenly,
+            modifier = Modifier.fillMaxWidth()
+        ) {
+            Button(onClick = {
+                currentIndex = (currentIndex - 1 + artworks.size) % artworks.size
+            }) {
+                Text("Previous")
+            }
+            Button(onClick = {
+                currentIndex = (currentIndex + 1) % artworks.size
+            }) {
+                Text("Next")
+            }
+        }
     }
 }
 
 data class Artwork(val imageResId: Int, val title: String, val artist: String, val year: Int)
 
-val artworks = listOf(
-    Artwork(R.drawable.artwork1, "Sailing Under the Bridge", "Kat Kuan", 2017),
-    Artwork(R.drawable.artwork2, "Misty Mountains", "John Doe", 2020),
-    Artwork(R.drawable.artwork3, "Golden Sunrise", "Jane Smith", 2019)
-)
 
 @Composable
 fun DisplayArtwork(artwork: Artwork) {
@@ -91,3 +119,4 @@ fun DisplayArtwork(artwork: Artwork) {
         }
     }
 }
+
