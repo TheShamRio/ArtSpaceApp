@@ -39,3 +39,11 @@ fun ArtSpaceApp() {
 
     }
 }
+
+data class Artwork(val imageResId: Int, val title: String, val artist: String, val year: Int)
+
+val artworks = listOf(
+    Artwork(R.drawable.artwork1, "Sailing Under the Bridge", "Kat Kuan", 2017),
+    Artwork(R.drawable.artwork2, "Misty Mountains", "John Doe", 2020),
+    Artwork(R.drawable.artwork3, "Golden Sunrise", "Jane Smith", 2019)
+)
